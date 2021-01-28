@@ -1,6 +1,7 @@
 
 const sendToMongo =  (result, endpointExt) => {
     console.log("I'm going to submit");
+    console.log(result)
     const fetchOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -13,7 +14,7 @@ const sendToMongo =  (result, endpointExt) => {
     })
 }
 const sportData = () => {
-fetch("https://api.the-odds-api.com/v3/sports/?apiKey=a8c3c43277cb3421d02ab70bba310be8")
+fetch(`https://api.the-odds-api.com/v3/sports/?apiKey=a8c3c43277cb3421d02ab70bba310be8`)
     .then((response) => {
         if( !response.ok){
             throw Error ("Something went wrong")
@@ -24,7 +25,11 @@ fetch("https://api.the-odds-api.com/v3/sports/?apiKey=a8c3c43277cb3421d02ab70bba
         const sportsData = jsonResponse.data.map(sport => {
             console.log(sport.group)
             sendToMongo(sport.group, "Sports")
-            return `<li> ${sport.group} - ${sport.details} </li>`
+            return `
+            <div class = "allSports"> 
+            <li class= "listSports"> ${sport.group} - ${sport.details} </li>
+            </div>
+            `
         })
         document.querySelector(".sportsAvailable").innerHTML = sportsData;
     })
@@ -37,7 +42,7 @@ sportData ();
 
 
 const inPlay = () => {
-    fetch("https://api.the-odds-api.com/v3/odds/?sport=upcoming&region=uk&mkt=h2h&apiKey=a8c3c43277cb3421d02ab70bba310be8")
+    fetch(`https://api.the-odds-api.com/v3/odds/?sport=upcoming&region=uk&mkt=h2h&apiKey=a8c3c43277cb3421d02ab70bba310be8`)
         .then((response) => {
             if( !response.ok){
                 throw Error ("Something went wrong")
@@ -71,7 +76,7 @@ const inPlay = () => {
     // setInterval(inPlay, 100) // Would update the scores every second to give updated odds on inplay but would demand alot of API requests
 
     const premierLeagueOdds = () => {
-        fetch("https://api.the-odds-api.com/v3/odds/?apiKey=a8c3c43277cb3421d02ab70bba310be8&sport=soccer_epl&region=uk&mkt=h2h")
+        fetch(`https://api.the-odds-api.com/v3/odds/?apiKey=a8c3c43277cb3421d02ab70bba310be8&sport=soccer_epl&region=uk&mkt=h2h`)
         .then((response) => {
             if( !response.ok){
                 throw Error ("Something went wrong")
@@ -96,14 +101,3 @@ const inPlay = () => {
                 throw Error ("error")
 })}
 premierLeagueOdds ();
-
-const testFetch = () => {
-    console.log("working");
-    fetch("http://localhost:8080")
-    .then((response) => {
-        return response.json()
-        console.log (response)
-})  .then ((response) => (console.log(response)
-))
-}
-testFetch();

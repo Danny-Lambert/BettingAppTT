@@ -1,11 +1,14 @@
 import mongodb from "mongodb";
+import dotenv from "dotenv";
 
+dotenv.config();
 
 const mongoClient = mongodb.MongoClient;
 
 let dbName = "BetMe"; 
 
-const uri = "mongodb+srv://danny:Danny12345@bettingcluster.n04jv.mongodb.net/BetMe?retryWrites=true&w=majority";
+const uri = `mongodb+srv://${process.env.DB_NAME}:${process.env.DB_PASSWORD}@bettingcluster.n04jv.mongodb.net/BetMe?retryWrites=true&w=majority`;
+
 
 export const getCollectionDocuments = async (collectionName) => {
     const mongo = await mongoClient.connect(uri);
